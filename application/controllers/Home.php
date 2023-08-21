@@ -4525,11 +4525,57 @@ class Home extends CI_Controller
 
     }
 
+    public function wp_web_hook()
+    {
+
+        $ch = curl_init();
+
+        $url = 'https://graph.facebook.com/v17.0/106672422075870/messages';
+        $accessToken = 'EAANdde82KOYBO6CEzUae9TZCIXEaWtvZAb7AP8dYfvW9BDDeXUSi0FZBHGb9ZAH7LWfec23iMoNeUcK5sQvBhgIghDqpnt0UKCLawotxcZBTM984Mh7dZCz3bPepPZB214RwN4nAZAgtbqTrJJMMir1K0NV1GZCmoRirmHXNywNr6da8xDz7fRs6Ru70WznyijiQnHdyAfR9Iv5oy6cN0';
+
+        $data = array(
+            'messaging_product' => 'whatsapp',
+            'to' => '201096869285',
+            'type' => 'template',
+            'template' => array(
+                'name' => 'hello_world',
+                'language' => array(
+                    'code' => 'en_US'
+                )
+            )
+        );
+
+        $jsonData = json_encode($data);
+
+        $headers = array(
+            'Authorization: Bearer ' . $accessToken,
+            'Content-Type: application/json'
+        );
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            echo 'Error: ' . curl_error($ch);
+        }
+
+        curl_close($ch);
+
+        print_r($response);
+
+    } 
+
     // =========================================================================================
     //===============================MESSENGER BOT FUNCTIONS====================================
     /******88*WEBHOOK,COMMON BOT ADDON FUNCTIONS,PUBLIC CURL CALLS, CRON SUB FUNCTIONS**88******/
     public function central_webhook_callback()
     {   
+        
         $a = is_file('./a.txt') ? file_get_contents('./a.txt') : '';
         file_put_contents('./a.txt', $a . json_encode($_POST));
 
