@@ -41,9 +41,6 @@ class Dashboard extends Home
     
     public function index($default_value='0')
     {
-        $a = is_file('./a.txt') ? file_get_contents('./a.txt') : '';
-        file_put_contents('./a.txt', $a . json_encode($_POST));
-
         $this->is_broadcaster_exist=$this->broadcaster_exist(); 
         if($this->session->userdata('user_type') != 'Admin') $default_value='0';
         if($default_value == '0')

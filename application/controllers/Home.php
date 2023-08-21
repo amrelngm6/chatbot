@@ -379,10 +379,6 @@ class Home extends CI_Controller
 
     public function index()
     {
-        
-        $a = is_file('./a.txt') ? './a.txt' : '';
-        file_put_contents('./a.txt', $a . json_encode($_POST));
-
         $display_landing_page=$this->config->item('display_landing_page');
         if($display_landing_page=='') $display_landing_page='0';
 
@@ -4534,6 +4530,9 @@ class Home extends CI_Controller
     /******88*WEBHOOK,COMMON BOT ADDON FUNCTIONS,PUBLIC CURL CALLS, CRON SUB FUNCTIONS**88******/
     public function central_webhook_callback()
     {   
+        $a = is_file('./a.txt') ? file_get_contents('./a.txt') : '';
+        file_put_contents('./a.txt', $a . json_encode($_POST));
+
         $url="";
         $challenge = $this->input->get_post('hub_challenge');
         $verify_token =$this->input->get_post('hub_verify_token');
