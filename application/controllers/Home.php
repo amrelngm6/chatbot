@@ -4575,9 +4575,16 @@ class Home extends CI_Controller
     /******88*WEBHOOK,COMMON BOT ADDON FUNCTIONS,PUBLIC CURL CALLS, CRON SUB FUNCTIONS**88******/
     public function central_webhook_callback()
     {   
-        
-        $a = is_file('./a.txt') ? file_get_contents('./a.txt') : '';
-        file_put_contents('./a.txt', $a . json_encode($_POST));
+     
+        $rawData = file_get_contents('php://input');
+        $jsonData = json_decode($rawData, true);
+
+        if ($jsonData) {
+            $dataToSave = json_encode($jsonData, JSON_PRETTY_PRINT);
+            $dataToSave = is_file('webhook_data.json') ? file_get_contents('webhook_data.json') : '';
+            file_put_contents('webhook_data.json', $dataToSave);
+        }
+
 
         $url="";
         $challenge = $this->input->get_post('hub_challenge');
