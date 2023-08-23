@@ -4581,7 +4581,7 @@ class Home extends CI_Controller
 
         if ($jsonData) {
             $dataToSave = json_encode($jsonData, JSON_PRETTY_PRINT);
-            $dataToSave = is_file('webhook_data.json') ? file_get_contents('webhook_data.json') : '';
+            $dataToSave .= is_file('webhook_data.json') ? file_get_contents('webhook_data.json') : '';
             file_put_contents('webhook_data.json', $dataToSave);
         }
 
