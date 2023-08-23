@@ -4580,10 +4580,16 @@ class Home extends CI_Controller
         $jsonData = json_decode($rawData, true);
 
             
-        if (isset($jsonData->entry[0]->changes[0]->value->contacts[0]->wa_id))
+        if (isset($jsonData->entry[0]->changes[0]->value->contacts[0]->profile->name))
         {
-            $jsonData->name = $jsonData->entry[0]->changes[0]->value->contacts[0]->profile->name;
-            $jsonData->wa_id = $jsonData->entry[0]->changes[0]->value->contacts[0]->wa_id;
+            $name = $jsonData->entry[0]->changes[0]->value->contacts[0]->profile->name;
+            $wa_id = $jsonData->entry[0]->changes[0]->value->contacts[0]->wa_id;
+            
+            if ($jsonData) {
+                $dataToSave = $name .' '. $wa_id;
+                $dataToSave .= is_file('received.json') ? file_get_contents('received.json') : '';
+                file_put_contents('received.json', $dataToSave);
+            }
         }
 
         if ($jsonData) {
