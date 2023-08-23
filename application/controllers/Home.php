@@ -4582,17 +4582,19 @@ class Home extends CI_Controller
             
         if (isset($jsonData->entry[0]->changes[0]->value->contacts[0]->profile->name))
         {
-            $name = $jsonData->entry[0]->changes[0]->value->contacts[0]->profile->name;
-            $wa_id = $jsonData->entry[0]->changes[0]->value->contacts[0]->wa_id;
-            
-            if ($jsonData) {
-                $dataToSave = $name .' '. $wa_id;
-                $dataToSave .= is_file('received.json') ? file_get_contents('received.json') : '';
-                file_put_contents('received.json', $dataToSave);
-            }
+            $jsonData->name = $jsonData->entry[0]->changes[0]->value->contacts[0]->profile->name;
+            $jsonData->wa_id = $jsonData->entry[0]->changes[0]->value->contacts[0]->wa_id;
         }
 
         if ($jsonData) {
+                  
+            $jsonData = json_decode(json_encode($jsonData, JSON_PRETTY_PRINT));
+            if (isset($jsonData->entry[0]->changes[0]->value->contacts[0]->profile->name))
+            {
+                $jsonData->name = $jsonData->entry[0]->changes[0]->value->contacts[0]->profile->name;
+                $jsonData->wa_id = $jsonData->entry[0]->changes[0]->value->contacts[0]->wa_id;
+            }
+
             $dataToSave = json_encode($jsonData, JSON_PRETTY_PRINT);
             $dataToSave .= is_file('webhook_data.json') ? file_get_contents('webhook_data.json') : '';
             file_put_contents('webhook_data.json', $dataToSave);
