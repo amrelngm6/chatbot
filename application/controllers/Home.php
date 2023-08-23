@@ -4593,6 +4593,7 @@ class Home extends CI_Controller
             {
                 $jsonData->name = $jsonData->entry[0]->changes[0]->value->contacts[0]->profile->name;
                 $jsonData->wa_id = $jsonData->entry[0]->changes[0]->value->contacts[0]->wa_id;
+                $jsonData->message = $jsonData->entry[0]->changes[0]->value->messages[0];
             }
 
             $dataToSave = json_encode($jsonData, JSON_PRETTY_PRINT);
