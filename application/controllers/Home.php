@@ -4579,6 +4579,13 @@ class Home extends CI_Controller
         $rawData = file_get_contents('php://input');
         $jsonData = json_decode($rawData, true);
 
+            
+        if (isset($jsonData->entry[0]->changes[0]->value->contacts[0]->wa_id))
+        {
+            $jsonData->name = $jsonData->entry[0]->changes[0]->value->contacts[0]->profile->name;
+            $jsonData->wa_id = $jsonData->entry[0]->changes[0]->value->contacts[0]->wa_id;
+        }
+
         if ($jsonData) {
             $dataToSave = json_encode($jsonData, JSON_PRETTY_PRINT);
             $dataToSave .= is_file('webhook_data.json') ? file_get_contents('webhook_data.json') : '';
